@@ -10,7 +10,7 @@
 <XPD:BODY>
 <XPD:OBJ name="DocumentElement" type="UMLProject" guid="mZhOwsZzv02pHzbIkUmYLgAA">
 <XPD:ATTR name="Title" type="string">Untitled</XPD:ATTR>
-<XPD:ATTR name="#OwnedElements" type="integer">4</XPD:ATTR>
+<XPD:ATTR name="#OwnedElements" type="integer">5</XPD:ATTR>
 <XPD:OBJ name="OwnedElements[0]" type="UMLModel" guid="QREtg01KVE+Btq6CItpqWgAA">
 <XPD:ATTR name="Name" type="string">Use Case View</XPD:ATTR>
 <XPD:REF name="Namespace">mZhOwsZzv02pHzbIkUmYLgAA</XPD:REF>
@@ -2385,14 +2385,14 @@
 <XPD:ATTR name="Alpha" type="real">0,523598775598299</XPD:ATTR>
 <XPD:ATTR name="Distance" type="real">25</XPD:ATTR>
 <XPD:ATTR name="EdgePosition" type="EdgePositionKind">epHead</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">1</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">1..*</XPD:ATTR>
 <XPD:REF name="Model">nUeCo3TuHUyfgM7l4P2TcwAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="TailMultiplicityLabel" type="EdgeLabelView" guid="Fbza88Jufkmbhg4nfB8puAAA">
 <XPD:ATTR name="Alpha" type="real">-0,523598775598299</XPD:ATTR>
 <XPD:ATTR name="Distance" type="real">25</XPD:ATTR>
 <XPD:ATTR name="EdgePosition" type="EdgePositionKind">epTail</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">1..*</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">1</XPD:ATTR>
 <XPD:REF name="Model">k0WfGvV1O0iHE2v9iHZHtAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="HeadPropertyLabel" type="EdgeLabelView" guid="mgbF24QIn06nZsDwz8jdggAA">
@@ -2557,7 +2557,7 @@
 <XPD:REF name="Views[3]">fceHgImHw0+IPcOwnLvnOgAA</XPD:REF>
 <XPD:ATTR name="#Connections" type="integer">2</XPD:ATTR>
 <XPD:OBJ name="Connections[0]" type="UMLAssociationEnd" guid="k0WfGvV1O0iHE2v9iHZHtAAA">
-<XPD:ATTR name="Multiplicity" type="string">1..*</XPD:ATTR>
+<XPD:ATTR name="Multiplicity" type="string">1</XPD:ATTR>
 <XPD:REF name="Association">F9RyndqGTUeaRAlSXSSaqwAA</XPD:REF>
 <XPD:REF name="Participant">BSnjeB28oUmn3ossm7Wh0QAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
@@ -2567,7 +2567,7 @@
 <XPD:REF name="Views[3]">Iix4/8XVL0CnEX19XM1TYgAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Connections[1]" type="UMLAssociationEnd" guid="nUeCo3TuHUyfgM7l4P2TcwAA">
-<XPD:ATTR name="Multiplicity" type="string">1</XPD:ATTR>
+<XPD:ATTR name="Multiplicity" type="string">1..*</XPD:ATTR>
 <XPD:REF name="Association">F9RyndqGTUeaRAlSXSSaqwAA</XPD:REF>
 <XPD:REF name="Participant">S4PuCDl8cUqgRmKF2Eo9xgAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
@@ -2600,6 +2600,56 @@
 <XPD:OBJ name="DiagramView" type="UMLDeploymentDiagramView" guid="67Z/2/n+30SxMsu1i/VRnwAA">
 <XPD:REF name="Diagram">LJ5wMIM7+0OW6Gi9MpqTVAAA</XPD:REF>
 </XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[4]" type="UMLModel" guid="CZqVTk0wYECUsU/HVrgqmAAA">
+<XPD:ATTR name="Name" type="string">Object</XPD:ATTR>
+<XPD:REF name="Namespace">mZhOwsZzv02pHzbIkUmYLgAA</XPD:REF>
+<XPD:ATTR name="#OwnedDiagrams" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedDiagrams[0]" type="UMLClassDiagram" guid="H18KSbO60U+LIB53ilHcRwAA">
+<XPD:ATTR name="Name" type="string">Obj</XPD:ATTR>
+<XPD:REF name="DiagramOwner">CZqVTk0wYECUsU/HVrgqmAAA</XPD:REF>
+<XPD:OBJ name="DiagramView" type="UMLClassDiagramView" guid="nrTXFJF/gU+y1UolP3btfwAA">
+<XPD:REF name="Diagram">H18KSbO60U+LIB53ilHcRwAA</XPD:REF>
+<XPD:ATTR name="#OwnedViews" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="OwnedViews[0]" type="UMLColObjectView" guid="YvJnP+N+XU2WIM2o6aEUoQAA">
+<XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
+<XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+<XPD:ATTR name="Left" type="integer">152</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">44</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">198</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">196</XPD:ATTR>
+<XPD:REF name="Model">rxvkHpZ1eEyOZrh/X88DKgAA</XPD:REF>
+<XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="NZAUcXDQPE6IxgGgsNf8DgAA">
+<XPD:OBJ name="NameLabel" type="LabelView" guid="SE8Y/4OiRUmY4zEHXh9QEgAA">
+<XPD:ATTR name="FontStyle" type="integer">4</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">о</XPD:ATTR>
+</XPD:OBJ>
+<XPD:OBJ name="StereotypeLabel" type="LabelView" guid="8OvXF2MKpk2vNEeddqOZowAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+</XPD:OBJ>
+<XPD:OBJ name="PropertyLabel" type="LabelView" guid="8VT5J3XCvEGbiAxDRXH5IAAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="SlotCompartment" type="UMLSlotCompartmentView" guid="FaGTF971OUW4HPDRuw0QoAAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:REF name="Model">rxvkHpZ1eEyOZrh/X88DKgAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:ATTR name="#OwnedElements" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="OwnedElements[0]" type="UMLObject" guid="rxvkHpZ1eEyOZrh/X88DKgAA">
+<XPD:ATTR name="Name" type="string">о</XPD:ATTR>
+<XPD:REF name="Namespace">CZqVTk0wYECUsU/HVrgqmAAA</XPD:REF>
+<XPD:ATTR name="#Views" type="integer">2</XPD:ATTR>
+<XPD:REF name="Views[0]">YvJnP+N+XU2WIM2o6aEUoQAA</XPD:REF>
+<XPD:REF name="Views[1]">FaGTF971OUW4HPDRuw0QoAAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedElements[1]" type="UMLClass" guid="/Y3zVo5e4ESshxDz4TFMBQAA">
+<XPD:ATTR name="Name" type="string">Процесор(зовнішня панель)</XPD:ATTR>
+<XPD:REF name="Namespace">CZqVTk0wYECUsU/HVrgqmAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
 </XPD:OBJ>
