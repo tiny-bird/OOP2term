@@ -8,90 +8,297 @@
 #include <time.h>
 #include <stdlib.h>
 
-const int Time = 10;
+#define GL_BGR ff00ff
+#define pi (3.14)
 
-using namespace std;
+#define SHAR (0)
+#define PIRAMID (1)
+#define	BOTH (2)
 
-typedef struct{
-	GLboolean visible;
-	GLfloat x;
-	GLfloat y;
-	GLfloat z;
-	GLUquadricObj *q;
-}Shar;
+#define X (0)
+#define Y (1)
 
-GLUquadricObj  *q;     // Квадратичный объект для рисования сферы
+float size_shar = 0.5;
+float size_piramid = 0.5;
+float color_shar[3];
+float color_piramid[3];
+float pos_shar[3];
+float pos_piramid[3];
+int angle_shar[2];
+int angle_piramid[2];
+int timer = 0;
+int state = SHAR;
+int rotating_state = 0;
+GLUquadricObj *mySphere;
 
-Shar masShar[500];
-GLuint numberShar = 100;
-GLfloat sharRadius = 0.3;
-GLuint sharRadiusDrope = 30;
+int xpos, ypos;
 
-int InitGL()
-{
-	glEnable(GL_POINT_SMOOTH);
-	glEnable(GL_TEXTURE_2D);
-	glClearDepth(1.0f);                 // Разрешить очистку буфера глубины   - слой, отдаленность екрана
-	glEnable(GL_DEPTH_TEST);            // Разрешить тест глубины
-	glDepthFunc(GL_LEQUAL);            // Тип теста глубины
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);      // Улучшение в вычислении перспективы
+int InitGL(void){
+	pos_shar[0] = -1.0;
+	pos_shar[1] = 0.0;
+	pos_shar[2] = 0.0;
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glEnable(GL_BLEND);
-	// Настройка сферического наложения
-	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { 20.2, 20.0, 30.0, 0.0 };
+	glShadeModel(GL_FLAT);
+
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+	mySphere = gluNewQuadric();  // Создать квадратичный объект
+	// тип генерируемых нормалей для него – «сглаженные»
+	gluQuadricNormals(mySphere, GL_SMOOTH);
 	// Настройка отображения сферы
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
 
 	return true;
 }
 
+void mouse(int x, int y){
+	xpos = x;
+	ypos = y;
+	glutPostRedisplay();
+}
 
+void timer_func(int a){
+	if (timer < 350) {
+		timer++;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(25, timer_func, a);
+}
 
-void DrawGLScene()
-{
-	InitGL();
+void drawShar(float size){
+	glTranslatef(pos_shar[0], pos_shar[1], pos_shar[2]);
+	glColor3f(color_shar[0], color_shar[1], color_shar[2]);
+	glPushMatrix();
+	glRotatef(angle_shar[0], 1.0, 0.0, 0.0);
+	glRotatef(angle_shar[1], 0.0, 1.0, 0.0);
+	glTranslatef(0, -0.9, -0.9);
+	glRotatef(1, 0, 1, 0);
+	glRotatef(210, 1, 0, 0);
+	gluSphere(mySphere, 0.5f, 32, 16);
+	glPopMatrix();
+}
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Очистить экран и буфер глубины
+void DrawPiramid(float fA){
+	glTranslatef(pos_piramid[0], pos_piramid[1], pos_piramid[2]);
+	glColor3f(color_piramid[0], color_piramid[1], color_piramid[2]);
+	glPushMatrix();
+	glRotatef(angle_piramid[0], 0.0, 1.0, 1.0);
+	glRotatef(angle_piramid[1], 1.0, 0.0, 1.0);
+	glTranslatef(0, -0.9, -0.9);
+	glRotatef(0, 1, 0, 1);
+	glRotatef(210, 1, 0, 0);
+	glPopMatrix();
+	
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0, 0.0, 0.0);
+
+	glVertex3f(0.0, 1.0, 0.0);
+
+	glVertex3f(-1.0, -1.0, 1.0);
+
+	glVertex3f(1.0, -1.0, 1.0);
+
+	///////////////////////////
+
+	glColor3f(0.0, 1.0, 0.0);
+
+	glVertex3f(0.0, 1.0, 0.0);
+
+	glVertex3f(1.0, -1.0, 1.0);
+
+	glVertex3f(1.0, -1.0, -1.0);
+
+	///////////////////////////
+
+	glColor3f(0.0, 0.0, 1.0);
+
+	glVertex3f(0.0, 1.0, 0.0);
+
+	glVertex3f(1.0, -1.0, -1.0);
+
+	glVertex3f(-1.0, -1.0, -1.0);
+
+	////////////////////////////
+
+	glColor3f(1.0, 1.0, 0.0);
+
+	glVertex3f(0.0, 1.0, 0.0);
+
+	glVertex3f(-1.0, -1.0, -1.0);
+
+	glVertex3f(-1.0, -1.0, 1.0);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1.0, 1.0, 1.0);
+
+	glVertex3f(-1.0, -1.0, 1.0);
+
+	glVertex3f(-1.0, -1.0, -1.0);
+
+	glVertex3f(1.0, -1.0, -1.0);
+
+	glVertex3f(1.0, -1.0, 1.0);
+	glEnd();
+
+	glPopMatrix();
+}
+
+void display(){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	//glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
-	glutSwapBuffers();
+
+	gluLookAt(0.0, 0.0, 4.0,
+		0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0);
+
+	glScalef(1.0, 1.0, 1.0);
+
+	//SHAR
+	glPushMatrix();
+	//rotate to get the right perspective
+	glRotatef(1.0, 5.0, 0.0, 0.0);
+	drawShar(size_shar);
+	glPopMatrix();
+
+	//Piramid
+	glPushMatrix();
+	//rotate to get the right perspective
+	glRotatef(11.0, 3.0, 0.0, 0.0);
+	DrawPiramid(0.5);
+	glPopMatrix();
+	glFlush();
 }
 
-void Timer(int value){
-	DrawGLScene();
-	glutTimerFunc(Time, Timer, 1);
+void rotate_shar_global_axes(int axis, int direction){
+	float angle_x, angle_y, radius;
+	if (axis == Y){
+		radius = sqrt(pos_shar[0] * pos_shar[0] + pos_shar[2] * pos_shar[2]);
+		if (radius == 0){
+			angle_shar[1] += direction;
+			return;
+		}
+		angle_x = acos(pos_shar[0] / radius);
+		angle_x += direction*pi / 180;
+		pos_shar[0] = radius*cos(angle_x);
+		pos_shar[2] = radius*sin(angle_x);
+		std::cout << pos_shar[2] << std::endl;
+	}
+	else{
+		radius = sqrt(pos_shar[1] * pos_shar[1] + pos_shar[2] * pos_shar[2]);
+		if (radius == 0){
+			angle_shar[0] += direction;
+			return;
+		}
+		angle_y = acos(pos_shar[1] / radius);
+		angle_y += direction*pi / 180;
+		pos_shar[1] = radius*cos(angle_y);
+		pos_shar[2] = radius*sin(angle_y);
+	}
 }
-int _tmain(int argc, CHAR* argv[])
-{
+
+void reshape(int w, int h){
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void keyboard(unsigned char key, int x, int y){
+	switch (key){
+	case 'c': state = SHAR; break;
+	case 'r':
+		if (rotating_state == 0) rotating_state = 1;
+		else rotating_state = 0;
+		break;
+	case '+':
+		if (size_shar <= 1)
+			size_shar += 0.1;
+		break;
+	case '-':
+	case SHAR:
+		if (size_shar >= 0.2)
+			size_shar -= 0.1;
+		break;
+	case 'w':
+		if (rotating_state == 0)
+			angle_shar[0]++;
+		else
+			rotate_shar_global_axes(X, 1);
+		break;
+	case 's':
+		if (rotating_state == 0)
+			angle_shar[0]--;
+		else
+			rotate_shar_global_axes(X, -1);
+		break;
+	case 'd':
+		if (rotating_state == 0)
+			angle_shar[1]++;
+		else
+			rotate_shar_global_axes(Y, 1); break;
+
+	case 'a':
+		if (rotating_state == 0)
+			angle_shar[1]--;
+		else
+			rotate_shar_global_axes(Y, -1); break;
+	}
+}
+
+void skeyboard(int key, int x, int y){
+	switch (key){
+	case GLUT_KEY_DOWN:
+		pos_shar[1] -= 0.1; break;
+
+	case GLUT_KEY_UP:
+		pos_shar[1] += 0.1; break;
+
+	case GLUT_KEY_LEFT:
+		pos_shar[0] -= 0.1; break;
+	case GLUT_KEY_RIGHT:
+		pos_shar[0] += 0.1; break;
+	}
+}
+
+void set_color(){
+	color_shar[0] = 0.2; color_shar[1] = 0.5; color_shar[2] = 0.8;
+	color_piramid[0] = 0.8; color_piramid[1] = 0.1; color_piramid[2] = 0.2;
+}
+
+
+int main(int argc, char** argv){
 	glutInit(&argc, argv);
 	srand(time(0));
-	/*glutInitWindowSize(640, 480);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("My OpenGL Application");*/
-
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutGameModeString("1366x768:32"); //1366x768:32
-	glutEnterGameMode();
-	glutSetCursor(GLUT_CURSOR_NONE);
-	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-	glClearColor(0.4, 0.4, 0.9, 1);
-	glMatrixMode(GL_PROJECTION);            // Выбор матрицы проекций
-	glLoadIdentity();              // Сброс матрицы проекции
-
-	// Вычисление соотношения геометрических размеров для окна
-	gluPerspective(45.0f, 1366.0 / 768.0, 0.1f, 100.0f);
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	set_color();
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("My OpenGL Application");
 	InitGL();
+	glutDisplayFunc(display);
+	glutKeyboardFunc(keyboard);
+	glutSpecialFunc(skeyboard);
+	glutReshapeFunc(reshape);
 
-	glutTimerFunc(Time, Timer, 1);
+	glutTimerFunc(25, timer_func, 0);
 
-	GLuint temp;
-	//glutPostRedisplay();
-	/////////////////
+	glutPassiveMotionFunc(mouse);
+
 	glutMainLoop();
-	return EXIT_SUCCESS;
+	return 0;
 }
-
