@@ -208,6 +208,33 @@ void rotate_shar_global_axes(int axis, int direction){
 	}
 }
 
+void rotate_piramid_global_axes(int axis, int direction){
+	float angle_x, angle_y, radius;
+	if (axis == Y){
+		radius = sqrt(pos_piramid[0] * pos_piramid[0] + pos_piramid[2] * pos_piramid[2]);
+		if (radius == 0){
+			angle_piramid[1] += direction;
+			return;
+		}
+		angle_x = acos(pos_piramid[0] / radius);
+		angle_x += direction*pi / 180;
+		pos_piramid[0] = radius*cos(angle_x);
+		pos_piramid[2] = radius*sin(angle_x);
+		std::cout << pos_piramid[2] << std::endl;
+	}
+	else{
+		radius = sqrt(pos_piramid[1] * pos_piramid[1] + pos_piramid[2] * pos_piramid[2]);
+		if (radius == 0){
+			angle_piramid[0] += direction;
+			return;
+		}
+		angle_y = acos(pos_piramid[1] / radius);
+		angle_y += direction*pi / 180;
+		pos_piramid[1] = radius*cos(angle_y);
+		pos_piramid[2] = radius*sin(angle_y);
+	}
+}
+
 void reshape(int w, int h){
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -216,7 +243,77 @@ void reshape(int w, int h){
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void keyboard(unsigned char key, int x, int y){
+void keyboard2(unsigned char key, int x, int y) {
+	switch (key) {
+
+		// Вибір фігур(и)
+	case 'o': state = SHAR; break;
+	case 'p': state = PIRAMID; break;
+	case 'b': state = BOTH; break;
+	default:
+		switch (key) {
+			// Переключає режим повороту фігур(и)
+		case 'r':
+			if (rotating_state == 0) rotating_state = 1;
+			else rotating_state = 0;
+			break;
+
+			// Зміна розмірів фігур(и)
+		case '+':
+			if (state==SHAR) if (size_shar <= 1) size_shar += 0.1;
+			if (state == PIRAMID) if (size_piramid <= 1) size_piramid += 0.1;
+			break;
+		case '-':
+			if (state == SHAR) if (size_shar >= 0.2) size_shar -= 0.1;
+			if (state == PIRAMID) if (size_piramid >= 0.2) size_piramid -= 0.1;
+			break;
+
+			// Повороти фігур(и)
+		case 'w':
+			if (rotating_state == 0) {
+				if (state == SHAR) angle_shar[1]++;
+				if (state==PIRAMID) angle_piramid[1]++;
+			}
+			else {
+				if (state == SHAR) rotate_shar_global_axes(X, 1);
+				if (state == PIRAMID) rotate_piramid_global_axes(X, 1);
+			}
+			break;
+		case 's':
+			if (rotating_state == 0) {
+				if (state == SHAR) angle_shar[1]--;
+				if (state == PIRAMID) angle_piramid[1]--;
+			}
+			else {
+				if (state == SHAR) rotate_shar_global_axes(X, -1);
+				if (state == PIRAMID) rotate_piramid_global_axes(X, -1);
+			}
+			break;
+		case 'd':
+			if (rotating_state == 0) {
+				if (state == SHAR) angle_shar[2]++;
+				if (state == PIRAMID) angle_piramid[2]++;
+			}
+			else {
+				if (state == SHAR) rotate_shar_global_axes(Y, 1);
+				if (state == PIRAMID) rotate_piramid_global_axes(Y, 1);
+			}
+			break;
+		case 'a':
+			if (rotating_state == 0) {
+				if (state == SHAR) angle_shar[2]--;
+				if (state == PIRAMID) angle_piramid[2]--;
+			}
+			else {
+				if (state == SHAR) rotate_shar_global_axes(Y, -1);
+				if (state == PIRAMID) rotate_piramid_global_axes(Y, -1);
+			}
+			break;
+		}
+	}
+}
+
+void keyboard1(unsigned char key, int x, int y){
 	switch (key){
 	case 'c': state = SHAR; break;
 	case 'r':
@@ -258,20 +355,59 @@ void keyboard(unsigned char key, int x, int y){
 	}
 }
 
-void skeyboard(int key, int x, int y){
+void keyboard(unsigned char key, int x, int y){
+	int mod = glutGetModifiers();
 	switch (key){
-	case GLUT_KEY_DOWN:
-		pos_shar[1] -= 0.1; break;
-
-	case GLUT_KEY_UP:
-		pos_shar[1] += 0.1; break;
-
-	case GLUT_KEY_LEFT:
-		pos_shar[0] -= 0.1; break;
-	case GLUT_KEY_RIGHT:
-		pos_shar[0] += 0.1; break;
+	case 'm':
+		if (mod == GLUT_ACTIVE_CTRL){
+			size_shar -= 0.1; break;
+		}
+		else{
+			size_piramid -= 0.1; break;
+		}
+	case 'p':
+		if (mod == GLUT_ACTIVE_CTRL){
+			size_shar += 0.1; break;
+		}
+		else{
+			size_piramid += 0.1; break;
+		}
 	}
 }
+
+void skeyboard(int key, int x, int y){int mod = glutGetModifiers();
+			switch (key){
+			case GLUT_KEY_DOWN:
+				if (mod == GLUT_ACTIVE_CTRL){
+					pos_shar[1] -= 0.1; break;
+				}
+				else{
+					pos_piramid[1] -= 0.1; break;
+				}
+			case GLUT_KEY_UP:
+				if (mod == GLUT_ACTIVE_CTRL){
+					pos_shar[1] += 0.1; break;
+				}
+				else{
+					pos_piramid[1] += 0.1; break;
+				}
+
+			case GLUT_KEY_LEFT:
+				if (mod == GLUT_ACTIVE_CTRL){
+					pos_shar[0] -= 0.1; break;
+				}
+				else{
+					pos_piramid[0] -= 0.1; break;
+				}
+			case GLUT_KEY_RIGHT:
+				if (mod == GLUT_ACTIVE_CTRL){
+					pos_shar[0] += 0.1; break;
+				}
+				else{
+					pos_piramid[0] += 0.1; break;
+				}
+			}
+		}
 
 void set_color(){
 	color_shar[0] = 0.2; color_shar[1] = 0.5; color_shar[2] = 0.8;
@@ -291,6 +427,7 @@ int main(int argc, char** argv){
 	glutCreateWindow("My OpenGL Application");
 	InitGL();
 	glutDisplayFunc(display);
+	//glutKeyboardFunc(keyboard1);
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(skeyboard);
 	glutReshapeFunc(reshape);
