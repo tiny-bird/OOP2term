@@ -375,7 +375,8 @@ void keyboard(unsigned char key, int x, int y){
 	}
 }
 
-void skeyboard(int key, int x, int y){int mod = glutGetModifiers();
+void skeyboard(int key, int x, int y){
+		int mod = glutGetModifiers();
 			switch (key){
 			case GLUT_KEY_DOWN:
 				if (mod == GLUT_ACTIVE_CTRL){
