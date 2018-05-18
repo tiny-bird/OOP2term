@@ -85,7 +85,7 @@ void drawShar(float size){
 	glTranslatef(0, -0.9, -0.9);
 	glRotatef(1, 0, 1, 0);
 	glRotatef(210, 1, 0, 0);
-	gluSphere(mySphere, 0.5f, 32, 16);
+	gluSphere(mySphere, size_shar, 32, 16);
 	glPopMatrix();
 }
 
@@ -103,53 +103,53 @@ void DrawPiramid(float fA){
 	glBegin(GL_TRIANGLES);
 	glColor3f(1.0, 0.0, 0.0);
 
-	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, size_piramid, 0.0);
 
-	glVertex3f(-1.0, -1.0, 1.0);
+	glVertex3f(-size_piramid, -size_piramid, size_piramid);
 
-	glVertex3f(1.0, -1.0, 1.0);
+	glVertex3f(size_piramid, -size_piramid, size_piramid);
 
 	///////////////////////////
 
 	glColor3f(0.0, 1.0, 0.0);
 
-	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, size_piramid, 0.0);
 
-	glVertex3f(1.0, -1.0, 1.0);
+	glVertex3f(size_piramid, -size_piramid, size_piramid);
 
-	glVertex3f(1.0, -1.0, -1.0);
+	glVertex3f(size_piramid, -size_piramid, -size_piramid);
 
 	///////////////////////////
 
 	glColor3f(0.0, 0.0, 1.0);
 
-	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, size_piramid, 0.0);
 
-	glVertex3f(1.0, -1.0, -1.0);
+	glVertex3f(size_piramid, -size_piramid, -size_piramid);
 
-	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-size_piramid, -size_piramid, -size_piramid);
 
 	////////////////////////////
 
 	glColor3f(1.0, 1.0, 0.0);
 
-	glVertex3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, size_piramid, 0.0);
 
-	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-size_piramid, -size_piramid, -size_piramid);
 
-	glVertex3f(-1.0, -1.0, 1.0);
+	glVertex3f(-size_piramid, -size_piramid, size_piramid);
 	glEnd();
 
 	glBegin(GL_QUADS);
 	glColor3f(1.0, 1.0, 1.0);
 
-	glVertex3f(-1.0, -1.0, 1.0);
+	glVertex3f(-size_piramid, -size_piramid, size_piramid);
 
-	glVertex3f(-1.0, -1.0, -1.0);
+	glVertex3f(-size_piramid, -size_piramid, -size_piramid);
 
-	glVertex3f(1.0, -1.0, -1.0);
+	glVertex3f(size_piramid, -size_piramid, -size_piramid);
 
-	glVertex3f(1.0, -1.0, 1.0);
+	glVertex3f(size_piramid, -size_piramid, size_piramid);
 	glEnd();
 
 	glPopMatrix();
@@ -373,6 +373,7 @@ void keyboard(unsigned char key, int x, int y){
 			size_piramid += 0.1; break;
 		}
 	}
+	glutDisplayFunc(display);
 }
 
 void skeyboard(int key, int x, int y){
@@ -432,7 +433,7 @@ int main(int argc, char** argv){
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(skeyboard);
 	glutReshapeFunc(reshape);
-
+	glutDisplayFunc(display);
 	glutTimerFunc(25, timer_func, 0);
 
 	glutPassiveMotionFunc(mouse);
